@@ -1,2 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Quicksand:wght@300..700&display=swap')
+@import '~line-awesome/dist/line-awesome/css/line-awesome.css'
+
+
 @import '~nib'
 normalize-css()
+
+$primary-color = #FFC107
+
+
+*
+    box-sizing border-box
+
+@import 'classes'
+@import 'forms'
+
+html
+    height 100%
+
+
+body
+    font-family: 'Quicksand', sans-serif
+    height 100%
+    color: #424242
+
+
+a
+    text-decoration none
+    color: $primary-color
+    font-weight: bold
+    text-decoration: none
+
+
+#app
+    height 100%
+
+
+header
+    position: fixed
+    top: 10px   
+    left: 10px  
+    width: 100px  
+    height: 40px
+    display: flex
+    align-items: center
+    justify-content: center
+    border-radius: 50%  
+
+    z-index: 100 
+
+    img
+        width: 70%  
+        height: auto
+
+
+
+
+h1
+    font-family: 'Dosis', sans-serif
+    font-weight: normal
+    font-size: 36px
+
