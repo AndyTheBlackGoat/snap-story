@@ -6,13 +6,15 @@
     div.column.flex.text
       div.content
         h1.text-center Crea historias
-        //- form(@submit.prevent="login")
-        form
-          ValidationProvider(v-slot="v")
-            
-            input(type="text" placeholder="Email" v-model="email")
-          ValidationProvider(v-slot="v")
-            input(type="password" placeholder="Contraseña" v-model="Contraseña")
+        Form(@submit.prevent="login")
+          div
+            label Email
+            Field(name="email" type="text" placeholder="Email" v-model="user.email" rules="required|email")
+            ErrorMessage(name="email" class="text-red-500")
+          div
+            label Contraseña
+            Field(name="password" type="password" placeholder="Contraseña" v-model="user.password" rules="required")
+            ErrorMessage(name="password" class="text-red-500")
           button(type="submit") Iniciar
         p.text-center 
           a(href="#") Crea una cuenta
@@ -20,11 +22,15 @@
       ul.social
         li: a(href="#"): i.lab.la-facebook
         li: a(href="#"): i.lab.la-instagram
-
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate'
+import { Field, Form, ErrorMessage, defineRule } from 'vee-validate';
+import { email, required } from '@vee-validate/rules';
+
+// Definir reglas de validación
+defineRule('required', required);
+defineRule('email', email);
 
 export default {
   data() {
@@ -33,18 +39,23 @@ export default {
         email: '',
         password: ''
       }
-    }
+    };
   },
   components: {
-    ValidationProvider
+    Field,
+    Form,
+    ErrorMessage
   },
   methods: {
     login() {
-      alert(this.email)
+      if (!this.user.email || !this.user.password) {
+        alert('Por favor, complete todos los campos correctamente');
+        return;
+      }
+      alert(`Email: ${this.user.email}\nContraseña: ${this.user.password}`);
     }
   }
-
-}
+};
 </script>
 
 <style lang="stylus" scoped>
