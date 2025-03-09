@@ -5,20 +5,20 @@
         img(src="@/assets/img/login-snake.jpeg")
       div.column.flex.text
         div.content
-          h1.text-center Crea historias
-          // Usamos submitLogin directamente en el evento submit
+          h1.text-center Inicia sesión
           Form(@submit="submitLogin")
             div
-              //- label(for="username") Username
+              label(for="username") Username
               Field(name="username" id="username" v-model="username" type="text" placeholder="Username" rules="required")
               ErrorMessage(name="username" class="text-red-500")
             div
-              //- label(for="password") Contraseña
+              label(for="password") Contraseña
               Field(name="password" id="password" v-model="password" type="password" placeholder="Contraseña" rules="required")
               ErrorMessage(name="password" class="text-red-500")
             button(type="submit") Iniciar
           p.text-center
-            router-link(to="/Register") Crea una cuenta
+            // Enlace para ir a la página de registro
+            router-link(to="/register") Crear una cuenta
           div(v-if="message" :class="{'text-green-500': success, 'text-red-500': !success}")
             p {{ message }}
           div(v-if="serverResponse")
@@ -32,6 +32,7 @@
 import { Field, Form, ErrorMessage, defineRule } from 'vee-validate';
 import { required } from '@vee-validate/rules';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import api from '@/api.js';
 
 // Definir regla de validación "required"
@@ -44,6 +45,7 @@ export default {
     ErrorMessage,
   },
   setup() {
+    const router = useRouter();
     const username = ref('');
     const password = ref('');
     const message = ref('');
@@ -73,6 +75,11 @@ export default {
         if (response.data.message === "ok") {
           message.value = `✔️ Bienvenido, ${response.data.user.full_name}`;
           success.value = true;
+          // Guarda el token en localStorage
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", response.data.user.username);//guardaa el username en localStorage
+          // Redirige a la página de home
+          router.push({ name: 'Home' });
         } else {
           message.value = "❌ Usuario o contraseña incorrectos.";
           success.value = false;
