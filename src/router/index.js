@@ -3,12 +3,15 @@ import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import Home from '@/views/Home.vue'
 import Profile from '@/views/Profile.vue'
+import Upload from '@/views/Upload.vue'
 
 const routes = [
   { path: '/', name: 'Login', component: Login },
   { path: '/register', name: 'Register', component: Register },
   { path: '/home', name: 'Home', component: Home },
-  { path: '/profile', name: 'Profile', component: Profile, meta: { requiresAuth: true } }
+  { path: '/profile', name: 'Profile', component: Profile, meta: { requiresAuth: true } },
+  { path: '/upload', name: 'Upload', component: Upload, meta: { requiresAuth: true } }
+
 ]
 
 const router = createRouter({
@@ -16,21 +19,27 @@ const router = createRouter({
   routes
 })
 
-
-// Antes de cada navegación, verificamos si se requiere autenticación
-// Before each navigation, check if the route requires authentication
+// Guard global
 router.beforeEach((to, from, next) => {
+  // Controla el estilo del header
+  const header = document.getElementById('main-header')
+  if (header) {
+    if (to.name === 'Login' || to.name === 'Register') {
+      header.classList.add('only-logo')
+    } else {
+      header.classList.remove('only-logo')
+    }
+  }
+
+  // Verifica autenticación si es requerida
   if (to.meta.requiresAuth) {
     const token = localStorage.getItem('token')
     if (!token) {
-      // Si no hay token, redirige a Login
       return next({ name: 'Login' })
     }
   }
+
   next()
 })
-
-
-
 
 export default router

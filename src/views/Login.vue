@@ -31,7 +31,7 @@
 <script>
 import { Field, Form, ErrorMessage, defineRule } from 'vee-validate';
 import { required } from '@vee-validate/rules';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '@/api.js';
 
@@ -51,6 +51,22 @@ export default {
     const message = ref('');
     const success = ref(false);
     const serverResponse = ref('');
+
+    // Al montar el componente se agrega la clase "only-logo"
+    // onMounted(() => {
+    //   const header = document.getElementById('main-header');
+    //   if (header) {
+    //     header.classList.add('only-logo');
+    //   }
+    // });
+
+    // Al desmontar se remueve la clase para que en otras vistas se muestre correctamente
+    onUnmounted(() => {
+      const header = document.getElementById('main-header');
+      if (header) {
+        header.classList.remove('only-logo');
+      }
+    });
 
     // Función de login (lógica de autenticación)
     const login = async () => {
@@ -77,7 +93,7 @@ export default {
           success.value = true;
           // Guarda el token en localStorage
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("username", response.data.user.username);//guardaa el username en localStorage
+          localStorage.setItem("username", response.data.user.username); // guarda el username en localStorage
           // Redirige a la página de home
           router.push({ name: 'Home' });
         } else {

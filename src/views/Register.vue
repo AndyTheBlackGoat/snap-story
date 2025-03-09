@@ -40,7 +40,7 @@
 <script>
 import { Field, Form, ErrorMessage, defineRule } from 'vee-validate';
 import { required, email as emailRule } from '@vee-validate/rules';
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import api from '@/api.js';
 
 // Definir reglas de validación
@@ -61,6 +61,22 @@ export default {
     const message = ref('');
     const success = ref(false);
     const serverResponse = ref('');
+
+    // Al montar el componente se agrega la clase "only-logo" al header
+    // onMounted(() => {
+    //   const header = document.getElementById('main-header');
+    //   if (header) {
+    //     header.classList.add('only-logo');
+    //   }
+    // });
+
+    // Al desmontar se remueve la clase para que en otras vistas el logo recupere su estilo original
+    onUnmounted(() => {
+      const header = document.getElementById('main-header');
+      if (header) {
+        header.classList.remove('only-logo');
+      }
+    });
 
     // Función de registro (lógica de autenticación)
     const register = async () => {
